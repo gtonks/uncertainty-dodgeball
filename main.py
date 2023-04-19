@@ -38,7 +38,7 @@ while len(team1) > 0 and len(team2) > 0:
     team1_ball_pct = ball_pct(team1)
     team2_ball_pct = ball_pct(team2)
 
-    eliminated = list()
+    eliminated = set()
     for location in locations:
         actions_chosen = dict()
         for action in Action:
@@ -65,7 +65,7 @@ while len(team1) > 0 and len(team2) > 0:
                     target = random.choice(location.team1_players)
                 if target not in actions_chosen[Action.DODGE]:
                     # For now, shots have 100% accuracy as long as the target does not dodge
-                    eliminated.append(target)
+                    eliminated.add(target)
             player.has_ball = False
 
         location.team1_players.clear()
