@@ -6,6 +6,19 @@ from Half import Half
 from Action import Action
 
 
+def ball_pct(team: list) -> float:
+    """
+    Returns the percent of the team that has a ball.
+    """
+    total = 0
+    with_ball = 0
+    for player in team:
+        if player.has_ball == True:
+            with_ball += 1
+        total += 1
+    return with_ball / total
+
+
 locations = [Location(f'l{i}') for i in range(2)]
 team1_id = 1
 team1 = [Thrower(f't{i}', team1_id) for i in range(2)]
@@ -22,14 +35,21 @@ while len(team1) > 0 and len(team2) > 0:
         location = random.choice(locations)
         location.team2_players.append(player)
 
+    team1_ball_pct = ball_pct(team1)
+    team2_ball_pct = ball_pct(team2)
+
     eliminated = list()
     for location in locations:
         actions_chosen = dict()
         for action in Action:
             actions_chosen[action] = list()
 
-        for player in location.team1_players + location.team2_players:
-            action = player.choose_action()
+        for player in location.team1_players:
+            action = player.choose_action(opponent_ball_pct=team2_ball_pct)
+            print(f"Player {player.id} chose {action.name} at {location.id}.")
+            actions_chosen[action].append(player)
+        for player in location.team2_players:
+            action = player.choose_action(opponent_ball_pct=team1_ball_pct)
             print(f"Player {player.id} chose {action.name} at {location.id}.")
             actions_chosen[action].append(player)
 
