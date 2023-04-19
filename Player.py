@@ -10,5 +10,5 @@ class Player:
         self.team = team
         self.has_ball = False
 
-    def choose_action(self) -> Action:
+    def choose_action(self, **kwargs) -> Action:
         raise NotImplementedError

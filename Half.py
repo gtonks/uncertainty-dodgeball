@@ -8,7 +8,7 @@ class Half(Player):
     """
     Dodges half of the time.
     """
-    def choose_action(self) -> Action:
+    def choose_action(self, **kwargs) -> Action:
         if random.random() < 0.5:
             return Action.DODGE
         if self.has_ball:

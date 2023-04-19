@@ -6,7 +6,7 @@ class Thrower(Player):
     """
     Never dodges.
     """
-    def choose_action(self) -> Action:
+    def choose_action(self, **kwargs) -> Action:
         if self.has_ball:
             return Action.THROW
         return Action.PICK_UP

@@ -8,9 +8,9 @@ from Action import Action
 
 locations = [Location(f'l{i}') for i in range(2)]
 team1_id = 1
-team1 = [Thrower(f't{i}', team1_id) for i in range(1)]
+team1 = [Thrower(f't{i}', team1_id) for i in range(2)]
 team2_id = 2
-team2 = [Half(f'h{i}', team2_id) for i in range(1)]
+team2 = [Half(f'h{i}', team2_id) for i in range(2)]
 
 while len(team1) > 0 and len(team2) > 0:
     print(f"Players remaining: {len(team1)} {len(team2)}")
