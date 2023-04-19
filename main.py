@@ -1,46 +1,31 @@
 import random
 
 from Location import Location
+from Team import Team
 from Thrower import Thrower
 from Half import Half
 from Clever import Clever
 from Action import Action
 
 
-def ball_pct(team: list) -> float:
-    """
-    Returns the percent of the team that has a ball.
-    """
-    total = 0
-    with_ball = 0
-    for player in team:
-        if player.has_ball == True:
-            with_ball += 1
-        total += 1
-    return with_ball / total
-
-
 locations = [Location(f'l{i}') for i in range(2)]
-team1_id = 1
-team1 = [Thrower(f't{i}', team1_id) for i in range(2)]
-team2_id = 2
-# team2 = [Half(f'h{i}', team2_id) for i in range(2)]
-team2 = [Clever(f'c{i}', team2_id) for i in range(2)]
+team1 = Team(1, [Thrower(f't{i}', 1) for i in range(2)])
+team2 = Team(2, [Clever(f'c{i}', 2) for i in range(2)])
 
-team1_remaining = len(team1)
-team2_remaining = len(team2)
+team1_remaining = len(team1.players)
+team2_remaining = len(team2.players)
 print(f"Players remaining: {team1_remaining} {team2_remaining}")
 
 while team1_remaining > 0 and team2_remaining > 0:
-    for player in team1:
+    for player in team1.players:
         location = random.choice(locations)
         location.team1_players.append(player)
-    for player in team2:
+    for player in team2.players:
         location = random.choice(locations)
         location.team2_players.append(player)
 
-    team1_ball_pct = ball_pct(team1)
-    team2_ball_pct = ball_pct(team2)
+    team1_ball_pct = team1.ball_pct()
+    team2_ball_pct = team2.ball_pct()
 
     eliminated = set()
     for location in locations:
@@ -63,7 +48,7 @@ while team1_remaining > 0 and team2_remaining > 0:
         has_both_teams = len(location.team1_players) > 0 and len(location.team2_players) > 0
         for player in actions_chosen[Action.THROW]:
             if has_both_teams and player.has_ball:
-                if player.team == team1_id:
+                if player.team == team1.id:
                     target = random.choice(location.team2_players)
                 else:
                     target = random.choice(location.team1_players)
@@ -76,13 +61,13 @@ while team1_remaining > 0 and team2_remaining > 0:
         location.team2_players.clear()
 
     for player in eliminated:
-        if player.team == team1_id:
-            team1.remove(player)
+        if player.team == team1.id:
+            team1.players.remove(player)
         else:
-            team2.remove(player)
+            team2.players.remove(player)
 
-    team1_remaining = len(team1)
-    team2_remaining = len(team2)
+    team1_remaining = len(team1.players)
+    team2_remaining = len(team2.players)
     print(f"Players remaining: {team1_remaining} {team2_remaining}")
 
 if team1_remaining == 0 and team2_remaining == 0:
