@@ -22,14 +22,16 @@ def ball_pct(team: list) -> float:
 
 locations = [Location(f'l{i}') for i in range(2)]
 team1_id = 1
-team1 = [Thrower(f't{i}', team1_id) for i in range(1)]
+team1 = [Thrower(f't{i}', team1_id) for i in range(2)]
 team2_id = 2
 # team2 = [Half(f'h{i}', team2_id) for i in range(2)]
-team2 = [Clever(f'c{i}', team2_id) for i in range(1)]
+team2 = [Clever(f'c{i}', team2_id) for i in range(2)]
 
-while len(team1) > 0 and len(team2) > 0:
-    print(f"Players remaining: {len(team1)} {len(team2)}")
+team1_remaining = len(team1)
+team2_remaining = len(team2)
+print(f"Players remaining: {team1_remaining} {team2_remaining}")
 
+while team1_remaining > 0 and team2_remaining > 0:
     for player in team1:
         location = random.choice(locations)
         location.team1_players.append(player)
@@ -79,4 +81,11 @@ while len(team1) > 0 and len(team2) > 0:
         else:
             team2.remove(player)
 
-print(f"Winner: Team {1 if len(team2) == 0 else 2}")
+    team1_remaining = len(team1)
+    team2_remaining = len(team2)
+    print(f"Players remaining: {team1_remaining} {team2_remaining}")
+
+if team1_remaining == 0 and team2_remaining == 0:
+    print("Both teams have eliminated each other!")
+else:
+    print(f"Winner: Team {1 if team2_remaining == 0 else 2}")
