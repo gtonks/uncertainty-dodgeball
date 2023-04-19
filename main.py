@@ -3,6 +3,7 @@ import random
 from Location import Location
 from Thrower import Thrower
 from Half import Half
+from Clever import Clever
 from Action import Action
 
 
@@ -21,9 +22,10 @@ def ball_pct(team: list) -> float:
 
 locations = [Location(f'l{i}') for i in range(2)]
 team1_id = 1
-team1 = [Thrower(f't{i}', team1_id) for i in range(2)]
+team1 = [Thrower(f't{i}', team1_id) for i in range(1)]
 team2_id = 2
-team2 = [Half(f'h{i}', team2_id) for i in range(2)]
+# team2 = [Half(f'h{i}', team2_id) for i in range(2)]
+team2 = [Clever(f'c{i}', team2_id) for i in range(1)]
 
 while len(team1) > 0 and len(team2) > 0:
     print(f"Players remaining: {len(team1)} {len(team2)}")
