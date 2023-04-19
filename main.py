@@ -6,11 +6,11 @@ from Half import Half
 from Action import Action
 
 
-locations = [Location()]
+locations = [Location(f'l{i}') for i in range(2)]
 team1_id = 1
-team1 = [Thrower(1, team1_id)]
+team1 = [Thrower(f't{i}', team1_id) for i in range(1)]
 team2_id = 2
-team2 = [Half(2, team2_id)]
+team2 = [Half(f'h{i}', team2_id) for i in range(1)]
 
 while len(team1) > 0 and len(team2) > 0:
     print(f"Players remaining: {len(team1)} {len(team2)}")
@@ -30,7 +30,7 @@ while len(team1) > 0 and len(team2) > 0:
 
         for player in location.team1_players + location.team2_players:
             action = player.choose_action()
-            print(f"Player {player.id} chose {action.name}.")
+            print(f"Player {player.id} chose {action.name} at {location.id}.")
             actions_chosen[action].append(player)
 
         if len(actions_chosen[Action.PICK_UP]) == 1:
