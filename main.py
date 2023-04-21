@@ -44,8 +44,8 @@ def run_game():
                 # print(f"Player {player.id} chose {action.name} at {location.id}.")
                 actions_chosen[action].append(player)
 
-            if len(actions_chosen[Action.PICK_UP]) == 1:
-                actions_chosen[Action.PICK_UP][0].has_ball = True
+            if len(actions_chosen[Action.PICK_UP]):
+                random.choice(actions_chosen[Action.PICK_UP]).has_ball = True
 
             has_both_teams = len(location.team1_players) > 0 and len(location.team2_players) > 0
             for player in actions_chosen[Action.THROW]:
