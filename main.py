@@ -1,22 +1,23 @@
 import random
 
 from Location import Location
-from Team import Team
-from Thrower import Thrower
+from Team import Team, get_players
 from Half import Half
+from Thrower import Thrower
 from Clever import Clever
 from Action import Action
+from Agent import Agent
+from Environment import Environment
+import copy
 
 
-def run_game():
-    locations = [Location(f'l{i}') for i in range(2)]
-    team1 = Team(1, [Thrower(f't{i}', 1) for i in range(2)])
-    team2 = Team(2, [Half(f'h{i}', 2) for i in range(2)])
-    # team2 = Team(2, [Clever(f'c{i}', 2) for i in range(2)])
+def run_game(t1, t2):
+    locations = [Location(f'l{i}') for i in range(len(t1.players))]
+    team1 = copy.deepcopy(t1)
+    team2 = copy.deepcopy(t2)
 
     team1_remaining = len(team1.players)
     team2_remaining = len(team2.players)
-    # print(f"Players remaining: {team1_remaining} {team2_remaining}")
 
     while team1_remaining > 0 and team2_remaining > 0:
         for player in team1.players:
@@ -57,6 +58,10 @@ def run_game():
                     if target not in actions_chosen[Action.DODGE]:
                         # For now, shots have 100% accuracy as long as the target does not dodge
                         eliminated.add(target)
+                    else:
+                        # 25% accuracy if the target does dodge
+                        if random.random() > .75:
+                            eliminated.add(target)
                 player.has_ball = False
 
             location.team1_players.clear()
@@ -83,15 +88,50 @@ def run_game():
         return 2
 
 
-n_sims = 300
+
+
+n_games = 300
 t1_wins = 0
 t2_wins = 0
+nPlayers = 3
 
-for _ in range(n_sims):
-    winner = run_game()
+t1 = Team(1, [])
+t2 = Team(2, [])
+agent = Agent(nPlayers, .2)
+players = get_players()
+for _ in range(n_games):
+    env = Environment(players)
+    playerIndex = agent.get_action()
+    t1.add_player(players[playerIndex])
+    t2.add_player()
+    winner = run_game(t1, t2)
+    reward = env.step(winner)
+    agent.update_Q(playerIndex, reward)
     if winner == 1:
         t1_wins += 1
     elif winner == 2:
         t2_wins += 1
 
 print(f"{t1_wins=}, {t2_wins=}")
+half = 0
+throw = 0
+clever = 0
+for player in t1.players:
+    if isinstance(player, Half):
+        half += 1
+    elif isinstance(player, Thrower):
+        throw += 1
+    elif isinstance(player, Clever):
+        clever += 1
+print(f"Team 1:\nHalf: {half}\nThrower: {throw}\nClever: {clever}\n\n")
+half = 0
+throw = 0
+clever = 0
+for player in t2.players:
+    if isinstance(player, Half):
+        half += 1
+    elif isinstance(player, Thrower):
+        throw += 1
+    elif isinstance(player, Clever):
+        clever += 1
+print(f"Team 2:\nHalf: {half}\nThrower: {throw}\nClever: {clever}\n\n")
