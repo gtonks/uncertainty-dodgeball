@@ -56,11 +56,16 @@ def run_game(t1, t2):
                     else:
                         target = random.choice(location.team1_players)
                     if target not in actions_chosen[Action.DODGE]:
-                        # For now, shots have 100% accuracy as long as the target does not dodge
-                        eliminated.add(target)
+                        # thrower adds .25 to hit probability
+                        if isinstance(player, Thrower) and random.random() > .25:
+                            eliminated.add(target)
+                        elif random.random() > .5:
+                            eliminated.add(target)
                     else:
-                        # 25% accuracy if the target does dodge
-                        if random.random() > .75:
+                        # dodge subtracts .25 from hit probability
+                        if isinstance(player, Thrower) and random.random() > .5:
+                            eliminated.add(target)
+                        elif random.random() > .75:
                             eliminated.add(target)
                 player.has_ball = False
 
@@ -75,63 +80,61 @@ def run_game(t1, t2):
 
         team1_remaining = len(team1.players)
         team2_remaining = len(team2.players)
-        # print(f"Players remaining: {team1_remaining} {team2_remaining}")
+        locations = [Location(f'l{i}') for i in range((team1_remaining + team2_remaining) // 2)]
 
-    if team1_remaining == 0 and team2_remaining == 0:
-        print("Both teams have eliminated each other!")
-        return None
-    elif team2_remaining == 0:
-        print(f"Winner: Team 1")
-        return 1
-    elif team1_remaining == 0:
-        print(f"Winner: Team 2")
-        return 2
+        if len(team1.players) == 1 and isinstance(team1.players[0], Clever) and len(team2.players) == 1 and isinstance(team2.players[0], Clever):
+            return 0
+
+    # if team1_remaining == 0 and team2_remaining == 0:
+    #     print("Both teams have eliminated each other!")
+    # elif team2_remaining == 0:
+    #     print(f"Winner: Team 1")
+    # elif team1_remaining == 0:
+    #     print(f"Winner: Team 2")
+    
+    return team1_remaining - team2_remaining
 
 
 
+def simulate():
+    n_games = 200
+    t1_wins = 0
+    t2_wins = 0
+    nPlayers = len(get_players())
+    eps = .3
 
-n_games = 300
-t1_wins = 0
-t2_wins = 0
-nPlayers = 3
+    t1 = Team(1, [])
+    t2 = Team(2, [])
+    agent = Agent(nPlayers, eps)
+    players = get_players()
+    for _ in range(n_games):
+        env = Environment(players)
+        playerIndex = agent.get_action()
+        t1.add_player(players[playerIndex])
+        t2.add_player()
+        winner = run_game(t1, t2)
+        reward = env.step(winner) / len(t1.players) 
+        # reward = 1 if winner > 0 else 0
+        agent.update_Q(playerIndex, reward)
+        if winner > 0:
+            t1_wins += 1
+        elif winner < 0:
+            t2_wins += 1
+    # print(agent.Q)
+    return t1_wins > t2_wins
 
-t1 = Team(1, [])
-t2 = Team(2, [])
-agent = Agent(nPlayers, .2)
-players = get_players()
-for _ in range(n_games):
-    env = Environment(players)
-    playerIndex = agent.get_action()
-    t1.add_player(players[playerIndex])
-    t2.add_player()
-    winner = run_game(t1, t2)
-    reward = env.step(winner)
-    agent.update_Q(playerIndex, reward)
-    if winner == 1:
-        t1_wins += 1
-    elif winner == 2:
-        t2_wins += 1
+# simulate()    # for only one simulation
 
-print(f"{t1_wins=}, {t2_wins=}")
-half = 0
-throw = 0
-clever = 0
-for player in t1.players:
-    if isinstance(player, Half):
-        half += 1
-    elif isinstance(player, Thrower):
-        throw += 1
-    elif isinstance(player, Clever):
-        clever += 1
-print(f"Team 1:\nHalf: {half}\nThrower: {throw}\nClever: {clever}\n\n")
-half = 0
-throw = 0
-clever = 0
-for player in t2.players:
-    if isinstance(player, Half):
-        half += 1
-    elif isinstance(player, Thrower):
-        throw += 1
-    elif isinstance(player, Clever):
-        clever += 1
-print(f"Team 2:\nHalf: {half}\nThrower: {throw}\nClever: {clever}\n\n")
+# This will do 100 simulations and give the total wins for each team
+t1_overall_wins = 0
+t2_overall_wins = 0
+for _ in range(100):
+    if simulate():
+        print("1")
+        t1_overall_wins += 1
+    else:
+        print("2" )
+        t2_overall_wins += 1
+
+print(f"t1 wins: {t1_overall_wins}")
+print(f"t2 wins: {t2_overall_wins}")

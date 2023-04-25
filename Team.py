@@ -24,24 +24,31 @@ class Team:
     def add_player(self, player=None):
         if self.id == 1:
             newPlayer = copy.deepcopy(player)
-            newPlayer.id = f't{len(self.players) + 1}'
+            newPlayer.id = f'p{len(self.players) + 1}'
             newPlayer.team = 1
             self.players.append(newPlayer)
-            print(f"Team 1 added player of type {type(player)}")
+            # print(f"Team 1 added player {type(player)}")
         else:
             players = get_players()
             player = random.choice(players)
             newPlayer = copy.deepcopy(player)
-            newPlayer.id = f't{len(self.players) + 1}'
+            newPlayer.id = f'p{len(self.players) + 1}'
             newPlayer.team = 2
             self.players.append(newPlayer)
-            print(f"Team 2 added player of type {type(player)}")
+            # print(f"Team 2 added player {type(player)}")
 
 def get_players():    
     players = [
+        # Half(None,None),
+        # Half(None,None),
+        # Half(None,None),
+        # Half(None,None),
+        # Half(None,None),
+        # Half(None,None),
+        # Half(None,None),
         Half(None,None),
-        Clever(None,None),
         Thrower(None,None),
+        Clever(None,None),
     ]
     
     return players

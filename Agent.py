@@ -12,6 +12,7 @@ class Agent:
         # Update Q action-value given (action, reward)
         self.n[player] += 1
         self.Q[player] += (1.0/self.n[player]) * (reward - self.Q[player])
+        # print(self.Q)
 
     def get_action(self):
         # Epsilon-greedy policy
