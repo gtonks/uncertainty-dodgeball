@@ -12,3 +12,7 @@ class Player:
 
     def choose_action(self, **kwargs) -> Action:
         raise NotImplementedError
+
+    # @classmethod
+    # def copy(cls, id, team):
+    #     return cls(id, team)
