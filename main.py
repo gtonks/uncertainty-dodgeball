@@ -1,5 +1,5 @@
 import random
-
+import plot
 from Location import Location
 from Team import Team, get_players
 from Half import Half
@@ -128,13 +128,20 @@ def simulate():
 # This will do 100 simulations and give the total wins for each team
 t1_overall_wins = 0
 t2_overall_wins = 0
-for _ in range(100):
+timeline1 = []
+timeline2 = []
+for i in range(100):
     if simulate():
-        print("1")
+        print('sim:',i,"1")
         t1_overall_wins += 1
     else:
-        print("2" )
+        print('sim:',i,"2")
         t2_overall_wins += 1
+    timeline1.append(t1_overall_wins)
+    timeline2.append(t2_overall_wins)
+
 
 print(f"t1 wins: {t1_overall_wins}")
 print(f"t2 wins: {t2_overall_wins}")
+
+plot.plotWins(timeline1, timeline2, "team 1(greedy epsilon) vs t2 (random)")
