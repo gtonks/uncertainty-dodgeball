@@ -10,9 +10,8 @@ from Agent import Agent
 from Environment import Environment
 import copy
 
-
-def run_game(t1, t2):
-    locations = [Location(f'l{i}') for i in range(len(t1.players))]
+def run_game(t1, t2, num_locations):
+    locations = [Location(f'l{i}') for i in range(num_locations)]
     team1 = copy.deepcopy(t1)
     team2 = copy.deepcopy(t2)
 
@@ -97,24 +96,29 @@ def run_game(t1, t2):
 
 
 def simulate():
-    n_games = 2000
+    n_games = 300 
     t1_wins = 0
     t2_wins = 0
     nPlayers = len(get_players())
     eps = .3
+    max_team_size = 100 
+    location_count = 100
     
     t1_wins_list, t2_wins_list = [], []
 
-    t1 = Team(1, [])
-    t2 = Team(2, [])
+    t1 = Team(1, max_team_size, [])
+    t2 = Team(2, max_team_size, [])
     agent = Agent(nPlayers, eps)
-    players = get_players()
+    player_choices = get_players()
     for _ in range(n_games):
-        env = Environment(players)
+        env = Environment(player_choices)
         playerIndex = agent.get_action()
-        t1.add_player(players[playerIndex])
+        t1.add_player(
+            player_choices[playerIndex],
+            [type(player_choices[player_choice_index]) for player_choice_index in agent.get_remove_preference()]
+        )
         t2.add_player()
-        winner = run_game(t1, t2)
+        winner = run_game(t1, t2, location_count)
         reward = env.step(winner) / len(t1.players) 
         # reward = 1 if winner > 0 else 0
         agent.update_Q(playerIndex, reward)
@@ -131,22 +135,7 @@ def simulate():
     
     return t1, t2, t1_wins_list, t2_wins_list
 
-t1, t2, t1_wins_list, t2_wins_list = simulate()    # for only one simulation
 
-# This will do 100 simulations and give the total wins for each team
-# t1_overall_wins = 0
-# t2_overall_wins = 0
-# timeline1 = []
-# timeline2 = []
-# for i in range(100):
-#     if simulate():
-#         print('sim:',i,"1")
-#         t1_overall_wins += 1
-#     else:
-#         print('sim:',i,"2")
-#         t2_overall_wins += 1
-#     timeline1.append(t1_overall_wins)
-#     timeline2.append(t2_overall_wins)
-
-
-plot.plotWins(t1, t2, t1_wins_list, t2_wins_list)
+if __name__ == "__main__":
+    t1, t2, t1_wins_list, t2_wins_list = simulate()
+    plot.plotWins(t1, t2, t1_wins_list, t2_wins_list)

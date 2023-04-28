@@ -20,3 +20,11 @@ class Agent:
             return np.random.choice(self.nPlayers)
         else: # exploit
             return np.random.choice(np.flatnonzero(self.Q == self.Q.max()))
+    
+    def get_remove_preference(self):
+        """
+        Returns the list of player types in order of preference to remove if needed
+        """
+
+        return np.argsort(self.Q)
+        
