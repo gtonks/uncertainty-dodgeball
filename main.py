@@ -97,11 +97,13 @@ def run_game(t1, t2):
 
 
 def simulate():
-    n_games = 200
+    n_games = 2000
     t1_wins = 0
     t2_wins = 0
     nPlayers = len(get_players())
     eps = .3
+    
+    t1_wins_list, t2_wins_list = [], []
 
     t1 = Team(1, [])
     t2 = Team(2, [])
@@ -120,28 +122,31 @@ def simulate():
             t1_wins += 1
         elif winner < 0:
             t2_wins += 1
-    # print(agent.Q)
-    return t1_wins > t2_wins
 
-# simulate()    # for only one simulation
+        t1_wins_list.append(t1_wins)
+        t2_wins_list.append(t2_wins)
+        
+        print(_)
+    # print(agent.Q)
+    
+    return t1, t2, t1_wins_list, t2_wins_list
+
+t1, t2, t1_wins_list, t2_wins_list = simulate()    # for only one simulation
 
 # This will do 100 simulations and give the total wins for each team
-t1_overall_wins = 0
-t2_overall_wins = 0
-timeline1 = []
-timeline2 = []
-for i in range(100):
-    if simulate():
-        print('sim:',i,"1")
-        t1_overall_wins += 1
-    else:
-        print('sim:',i,"2")
-        t2_overall_wins += 1
-    timeline1.append(t1_overall_wins)
-    timeline2.append(t2_overall_wins)
+# t1_overall_wins = 0
+# t2_overall_wins = 0
+# timeline1 = []
+# timeline2 = []
+# for i in range(100):
+#     if simulate():
+#         print('sim:',i,"1")
+#         t1_overall_wins += 1
+#     else:
+#         print('sim:',i,"2")
+#         t2_overall_wins += 1
+#     timeline1.append(t1_overall_wins)
+#     timeline2.append(t2_overall_wins)
 
 
-print(f"t1 wins: {t1_overall_wins}")
-print(f"t2 wins: {t2_overall_wins}")
-
-plot.plotWins(timeline1, timeline2, "team 1(greedy epsilon) vs t2 (random)")
+plot.plotWins(t1, t2, t1_wins_list, t2_wins_list)
