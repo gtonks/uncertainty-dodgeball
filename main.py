@@ -96,13 +96,13 @@ def run_game(t1, t2, num_locations):
 
 
 def simulate():
-    n_games = 500 
+    n_games = 1000 
     t1_wins = 0
     t2_wins = 0
     nPlayers = len(get_players())
     eps = .5
     max_team_size = 100 
-    location_count = 100
+    location_count = 120
     
     t1_wins_list, t2_wins_list = [], []
 
