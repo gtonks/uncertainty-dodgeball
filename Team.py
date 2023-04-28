@@ -1,6 +1,8 @@
 from Half import Half
 from Clever import Clever
 from Thrower import Thrower
+from Aggressive import Aggressive
+from Evasive import Evasive
 import random
 import copy
 
@@ -44,8 +46,8 @@ def get_players():
         # Half(None,None),
         # Half(None,None),
         # Half(None,None),
-        # Half(None,None),
-        # Half(None,None),
+        Evasive(None,None),
+        Aggressive(None,None),
         Half(None,None),
         Thrower(None,None),
         Clever(None,None),
