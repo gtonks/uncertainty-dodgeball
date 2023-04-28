@@ -50,7 +50,7 @@ def plotWins (t1: Team, t2: Team, t1_wins, t2_wins):
     plt.subplot(1,2,1)
     sns.lineplot(data = t1_wins, label='team 1')
     sns.lineplot(data = t2_wins, label='team 2')
-    plt.title(f"wins per team growing over {len(t1_wins)} plays")
+    plt.title(f"wins per team over {len(t1_wins)} game plays")
     plt.legend()
     plt.ylabel('wins')
     plt.xlabel('number of games')
@@ -63,7 +63,7 @@ def plotWins (t1: Team, t2: Team, t1_wins, t2_wins):
     sns.lineplot(data = comp1['evasives'], label= "# of evasives")
     
     plt.legend()
-    plt.title('number of each playertype as games win/lose')
+    plt.title('number of each playertype at each simulated game')
     plt.ylabel('players')
     plt.xlabel('number of games')
     plt.show()
