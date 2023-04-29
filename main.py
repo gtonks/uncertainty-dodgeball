@@ -118,9 +118,9 @@ def simulate():
             [type(player_choices[player_choice_index]) for player_choice_index in agent.get_remove_preference()]
         )
         t2.add_player()
-        winner = run_game(t1, t2, location_count)
+        winner = run_game(t1, t2, len(t1.players))      # Assigns the number of locations to the number of players on one team
+        # winner = run_game(t1, t2, location_count)       # Uncomment this and comment the line above to use location_count instead
         reward = env.step(winner) / len(t1.players) 
-        # reward = 1 if winner > 0 else 0
         agent.update_Q(playerIndex, reward)
         if winner > 0:
             t1_wins += 1
