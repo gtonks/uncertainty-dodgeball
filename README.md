@@ -44,3 +44,12 @@ Aggressive players are very similar to the thrower in that they play more offens
 
 ### Evasive
 Evasive players tend to play it a bit more on the safe side, trying to avoid more than they throw. Evasive players will choose to dodge 65% of the time, and throw 35% of the time.
+
+## Adjusting the Simulation Parameters
+The simulation has a number of parameters that can be adjusted to change the behavior of the simulation. These parameters can be adjusted by changing the variables declared at the top of the `simulate()` function found in `main.py`. The following parameters can be adjusted:
+
+- Number of game rounds to simulate
+- Number of locations available to players
+- Maximum number of players on a team
+- The epsilon value used by coach 1 in their epsilon-greedy strategy.
+
