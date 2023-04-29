@@ -6,7 +6,7 @@ This repository contains code to run a simplified simulation of a game of dodgeb
 The game pits two teams against each other, which are constructed by two different "coaches" (the agents in our simulation).
 
 ## How a game works
-Each round, a player (Agent) goes to a random Location. (The number of locations is a parameter that can be configured as part of the simulation.) The player chooses one of three actions to perform:
+Each round, a player (Agent) goes to a random Location. (The number of locations is a parameter that can be configured as part of the simulation, but by default is set to continually match the number of players currently in a team.) The player chooses one of three actions to perform:
 - DODGE: This prevents a player from getting hit and leaving the game for that round.
 - PICK_UP: Each round, one player at each Location who chooses this action will get a ball.
 - THROW: If the player has a ball, he randomly chooses someone from the other team at that Location to throw a ball at. If the targeted player did not dodge, he is eliminated. Regardless of outcome, the player who chose this action no longer has a ball.
@@ -50,7 +50,9 @@ Evasive players tend to play it a bit more on the safe side, trying to avoid mor
 The simulation has a number of parameters that can be adjusted to change the behavior of the simulation. These parameters can be adjusted by changing the variables declared at the top of the `simulate()` function found in `main.py`. The following parameters can be adjusted:
 
 - Number of game rounds to simulate
-- Number of locations available to players
 - Maximum number of players on a team
 - The epsilon value used by coach 1 in their epsilon-greedy strategy.
-
+- Number of locations available to players
+  - Note that to adjust this parameter, presently, some lines have to be commented-out and uncommented to set the simulation to honor a user-specified value. See the comments in the `simulate()` function of `main.py` for further details.
+- Initial team composition
+  - By default, we initialize the game with empty teams. If you want to start with some initial team, you can specify initial players in the lists passed to the `Team` constructors in `main.py`'s `simulate()` function.
