@@ -13,7 +13,8 @@ Each round, a player (Agent) goes to a random Location. (The number of locations
 
 Rounds continue until every player on a team is eliminated. The team with players remaining wins.
 
-At the end of a round, coaches will evaluate the performance of their team and make changes to the team based on their strategy. Initially, teams will start with 1 player each and will add additional players after each round.
+## Simulation Flow
+At the end of a game, coaches will evaluate the performance of their team and make changes to the team based on their strategy. Initially, teams will start with 1 player each. Teams will add additional players after each game.
 
 Team sizes are limited to a specific number of players, configurable as part of the simulation. Once teams have reached the configured size, players will be swapped out depending on the policy of the coach to try to find a more optimal team composition.
 
