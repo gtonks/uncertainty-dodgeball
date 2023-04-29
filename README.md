@@ -46,6 +46,23 @@ Aggressive players are very similar to the thrower in that they play more offens
 ### Evasive
 Evasive players tend to play it a bit more on the safe side, trying to avoid more than they throw. Evasive players will choose to dodge 65% of the time, and throw 35% of the time.
 
+## Running the Code
+
+Our program has a number of dependencies that need to be installed to run this program:
+
+- Numpy
+- Seaborn
+- Matplotlib
+- Pandas
+
+These dependencies can be installed using `pip` or `conda`. Any recent version of these libraries should work, though a `requirements.txt` file has also been provided for convienience with the versions of the libraries we used to develop this program.
+
+The main entrypoint of the program is `main.py`. No parameters are passed on the command line. The program will run the simulation and ouuput the progress in the console and will display a summary graph at the end of the simulation run. After ensuring the required dependencies are installed, simply run the program with the following command from the root of the repository with Python 3 installed:
+
+```
+python main.py
+```
+
 ## Adjusting the Simulation Parameters
 The simulation has a number of parameters that can be adjusted to change the behavior of the simulation. These parameters can be adjusted by changing the variables declared at the top of the `simulate()` function found in `main.py`. The following parameters can be adjusted:
 
