@@ -4,59 +4,72 @@ import pandas as pd
 from Half import Half
 from Thrower import Thrower
 from Clever import Clever
-def plotWins (t1, t2, t1_wins, t2_wins):
+from Aggressive import Aggressive
+from Evasive import Evasive
+from Team import Team
+
+def get_team_composition_stats(team: Team):
+    composition_stats = {
+        'throwers': [],
+        'halfs': [],
+        'clevers': [],
+        'aggressives': [],
+        'evasives': [],
+    }
     
-    comp1 = [[],[],[]]
-    comp2 = [[],[],[]]
+    for pastTeam in team.team_composition_history:
+        cleverCt = 0
+        throwerCt = 0
+        halfCt = 0
+        aggressiveCt = 0
+        evasiveCt = 0
+        for player in pastTeam:
+            if isinstance(player, Clever):
+                cleverCt += 1
+            elif isinstance(player, Thrower):
+                throwerCt += 1
+            elif isinstance(player, Half):
+                halfCt += 1
+            elif isinstance(player, Aggressive):
+                aggressiveCt += 1
+            elif isinstance(player, Evasive):
+                evasiveCt += 1
+        composition_stats['throwers'].append(throwerCt)
+        composition_stats['halfs'].append(halfCt)
+        composition_stats['clevers'].append(cleverCt)
+        composition_stats['aggressives'].append(aggressiveCt)
+        composition_stats['evasives'].append(evasiveCt)
     
-    throwers1 = 0
-    throwers2 = 0
-    halfs1 = 0
-    halfs2 = 0
-    clevers1 = 0
-    clevers2 = 0
-    for i in range(len(t1.players)):
-        if isinstance(t1.players[i], Clever):
-            clevers1 += 1
-        elif isinstance(t1.players[i], Thrower):
-            throwers1 += 1
-        else:
-            halfs1 +=1
+    return composition_stats
 
-        if isinstance(t2.players[i], Clever):
-            clevers2 += 1
-        elif isinstance(t2.players[i], Thrower):
-            throwers2 += 1
-        else:
-            halfs2 +=1
-
-        comp1[0].append(throwers1)
-        comp1[1].append(halfs1)
-        comp1[2].append(clevers1)
-        
-        comp2[0].append(throwers2)
-        comp2[1].append(halfs2)
-        comp2[2].append(clevers2)
-
+def plotWins (t1: Team, t2: Team, t1_wins, t2_wins):
+    comp1 = get_team_composition_stats(t1)
+    comp2 = get_team_composition_stats(t2)
+    
+    
     plt.subplot(1,2,1)
     sns.lineplot(data = t1_wins, label='team 1')
     sns.lineplot(data = t2_wins, label='team 2')
-    plt.title(f"wins per team growing over {len(t1_wins)} plays")
+    plt.title(f"wins per team over {len(t1_wins)} game plays")
     plt.legend()
     plt.ylabel('wins')
     plt.xlabel('number of games')
 
     plt.subplot(1,2,2)
-    sns.lineplot(data = comp1[0], label= "# of throwers")
-    sns.lineplot(data = comp1[1], label= "# of halfs")
-    sns.lineplot(data = comp1[2], label= "# of clevers")
+    sns.lineplot(data = comp1['throwers'], label= "# of throwers")
+    sns.lineplot(data = comp1['halfs'], label= "# of halfs")
+    sns.lineplot(data = comp1['clevers'], label= "# of clevers")
+    sns.lineplot(data = comp1['aggressives'], label= "# of aggressives")
+    sns.lineplot(data = comp1['evasives'], label= "# of evasives")
     
     plt.legend()
-    plt.title('number of each playertype as games win/lose')
+    plt.title('number of each playertype at each simulated game')
     plt.ylabel('players')
     plt.xlabel('number of games')
     plt.show()
 
-    print('throwers', comp1[0][-1])
-    print('halfs', comp1[1][-1])
-    print('clevers', comp1[2][-1])
+    print('throwers', comp1['throwers'][-1])
+    print('halfs', comp1['halfs'][-1])
+    print('clevers', comp1['clevers'][-1])
+    print('aggressives', comp1['aggressives'][-1])
+    print('evasives', comp1['evasives'][-1])
