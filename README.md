@@ -38,3 +38,9 @@ This player dodges half of the time. The rest of the time, he functions like a T
 
 ### Clever
 This player knows the fraction of players on the other team that have balls. When more than half of them do, he dodges. He functions like a Thrower the rest of the time.
+
+### Aggressive
+Aggressive players are very similar to the thrower in that they play more offensively. However, instead of always throwing, they will choose to throw 75% of the time and will choose to dodge 25% of the time.
+
+### Evasive
+Evasive players tend to play it a bit more on the safe side, trying to avoid more than they throw. Evasive players will choose to dodge 65% of the time, and throw 35% of the time.
